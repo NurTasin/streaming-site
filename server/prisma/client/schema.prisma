@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "./client"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String @id @default(uuid())
+  username  String @unique
+  pass_hash String
+
+  @@index([username])
+}
+
+model Video {
+  id                   String   @id @default(uuid())
+  title                String
+  description          String   @db.LongText
+  views                BigInt   @default(0)
+  org_file_dest        String?
+  processed            Boolean  @default(false)
+  transcoded_file_dest String?
+  transcode_state      String   @default("QUEUED")
+  org_file_size        BigInt
+  uploaded_at          DateTime @default(now())
+}

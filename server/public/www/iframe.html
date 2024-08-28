@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fullscreen HLS Video Player</title>
+  <link href="https://vjs.zencdn.net/7.21.0/video-js.css" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+    }
+
+    #video-container {
+      height: 100%;
+      width: 100%;
+      display: none; /* Hide initially */
+    }
+
+    #error-message {
+      color: #fff;
+      font-size: 24px;
+      display: none; /* Hide initially */
+    }
+
+    .video-js {
+      height: 100%;
+      width: 100%;
+    }
+
+    .vjs-control-bar {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div id="video-container">
+    <video id="hls-video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"></video>
+  </div>
+
+  <div id="error-message">Video Not Found</div>
+
+  <script src="https://vjs.zencdn.net/7.21.0/video.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-quality-levels@2.1.0/dist/videojs-contrib-quality-levels.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.2/dist/videojs-hls-quality-selector.min.js"></script>
+  <script>
+    // Function to get the video ID from the URL search params
+    function getVideoIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id');
+    }
+
+    // Construct the .m3u8 link based on the video ID
+    const videoId = getVideoIdFromUrl();
+    const m3u8Link = `/cdn/${videoId}/master.m3u8`;
+
+    // Initialize the Video.js Player with the dynamic m3u8 link
+    const player = videojs('hls-video', {
+      autoplay: false,
+      controls: true,
+      sources: [{
+        src: m3u8Link,
+        type: 'application/x-mpegURL'
+      }],
+      playbackRates: [0.5, 1.0, 1.5, 2.0],
+      controlBar: {
+        volumePanel: { inline: false }
+      }
+    });
+
+    // Quality Selector Plugin
+    player.hlsQualitySelector({
+      displayCurrentQuality: true
+    });
+
+    // Handle Error Event
+    player.on('error', function() {
+      const error = player.error();
+      if (error && error.code === 4) { // MediaError code 4: MEDIA_ERR_SRC_NOT_SUPPORTED
+        document.getElementById('video-container').style.display = 'none';
+        document.getElementById('error-message').style.display = 'flex';
+      }
+    });
+
+    // Show the video container on successful load
+    player.on('loadeddata', function() {
+      document.getElementById('video-container').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
