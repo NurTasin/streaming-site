@@ -130,6 +130,9 @@ exports.Prisma.VideoScalarFieldEnum = {
   title: 'title',
   description: 'description',
   views: 'views',
+  referer: 'referer',
+  protected: 'protected',
+  pass_hash: 'pass_hash',
   org_file_dest: 'org_file_dest',
   processed: 'processed',
   transcoded_file_dest: 'transcoded_file_dest',
@@ -138,20 +141,44 @@ exports.Prisma.VideoScalarFieldEnum = {
   uploaded_at: 'uploaded_at'
 };
 
+exports.Prisma.AccessTokenScalarFieldEnum = {
+  id: 'id',
+  videoId: 'videoId',
+  type: 'type',
+  expires_on: 'expires_on',
+  used: 'used',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.TokenType = exports.$Enums.TokenType = {
+  ONE_TIME: 'ONE_TIME',
+  TIME_BOUND: 'TIME_BOUND'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Video: 'Video'
+  Video: 'Video',
+  AccessToken: 'AccessToken'
 };
 
 /**

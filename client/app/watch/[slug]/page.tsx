@@ -37,6 +37,7 @@ export default async function Home({params}:{params: {slug: string}}) {
       tags: ["VIDEO_DATA"]
     }
   })).json()
+  console.log(data);
 
   return (
     <>
@@ -77,7 +78,7 @@ export default async function Home({params}:{params: {slug: string}}) {
             <h4 className="text-lg font-medium">Embed Code</h4>
             <div className="flex items-center gap-2 bg-muted rounded-md px-3 py-2">
               <code className="font-mono text-sm flex-1 select-all">
-                &lt;iframe width="560" height="315" src="http://localhost:8000/stream/iframe.html?id={params.slug}" frameborder="0"
+                &lt;iframe width="560" height="315" src="http://localhost:8000/stream/embed?id={params.slug}{data.protected?"&token=ACCESSTOKEN":""}" frameborder="0"
                 allow="accelerometer; autoplay; encrypted-media;\n gyroscope; picture-in-picture"
                 allowfullscreen&gt;&lt;/iframe&gt;
               </code>

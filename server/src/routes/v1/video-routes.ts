@@ -6,6 +6,7 @@ import fs from 'fs';
 import { nanoid } from "nanoid";
 import { Worker } from "worker_threads";
 import { db } from "../../db";
+import bcrypt, { compareSync } from "bcrypt";
 
 const transcodeWorker = new Worker('./dist/transcode/worker.js');
 
@@ -47,7 +48,7 @@ router.post("/upload", upload.single('video'),async  (req, res) => {
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
-    const {title, description} = req.body;
+    const {title, description, protect, pass, allowedSites} = req.body;
     // Access the filename from req.file and send it back to the client
     const fileId = path.parse(req.file.filename).name;
     await db.video.create({
@@ -59,7 +60,10 @@ router.post("/upload", upload.single('video'),async  (req, res) => {
             org_file_dest: req.file.path,
             processed: false,
             transcoded_file_dest: `/cdn/${fileId}`,
-            transcode_state: "QUEUED"
+            transcode_state: "QUEUED",
+            protected: protect==="true",
+            pass_hash: pass?bcrypt.hashSync(pass, bcrypt.genSaltSync(10)):undefined,
+            referer: JSON.parse(allowedSites || null)
         }
     })
     addToTranscodeQueue(req.file?.path)
@@ -84,6 +88,8 @@ router.get("/details/:id", async (req:Request, res: Response)=>{
             description: true,
             uploaded_at: true,
             transcode_state: true,
+            protected: true,
+            referer: true
         }
     });
     return res.status(200).json(data);
@@ -116,6 +122,46 @@ router.get("/trStatus/:id", async (req:Request,res: Response)=>{
                 progress: status?.transcode_state.split(",")[1]
             }
         })
+    }
+})
+
+
+router.post("/generateToken", async (req: Request, res: Response)=>{
+    const {videoId, pass, type, age} = req.body;
+    const videoData = await db.video.findFirst({
+        where:{
+            id: videoId
+        }
+    });
+    if(!videoData){
+        return res.status(404).send("Video not found");
+    }
+    if(!videoData.protected){
+        return res.status(200).send("Video is not protected");
+    }
+
+    if(compareSync(pass, videoData.pass_hash || "")){
+        // Create a token
+        if(type === "ONE_TIME"){
+            const token = await db.accessToken.create({
+                data:{
+                    videoId,
+                    type,
+                }
+            });
+            return res.status(200).json({error: false, msg: "Token Generated", token: token.id});
+        }else if(type === "TIME_BOUND"){
+            const token = await db.accessToken.create({
+                data:{
+                    videoId,
+                    type,
+                    expires_on: new Date(Date.now() + parseInt(age))
+                }
+            });
+            return res.status(200).json({error: false, msg: "Token Generated", token: token.id});
+        }
+    }else{
+        return res.status(403).send("Wrong Password");
     }
 })
 

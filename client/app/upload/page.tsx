@@ -1,4 +1,5 @@
 "use client";
+import { Checkbox } from '@/components/ui/checkbox';
 import axios from 'axios';
 import { transcode } from 'buffer';
 import Link from 'next/link';
@@ -8,6 +9,9 @@ import { RingLoader } from 'react-spinners';
 function VideoUploadForm() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [allowedSites, setAllowedSites] = useState<string[]>([]);
+    const [useProtection, setUseProtection] = useState<boolean>(false);
+    const [password, setPassword] = useState<string | null>(null);
     const [video, setVideo] = useState<File | null>(null);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [transcodeText, setTranscodeText] = useState("Queued");
@@ -19,8 +23,13 @@ function VideoUploadForm() {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
+        formData.append('protect', useProtection ? "true" : "false");
+        if (password) {
+            formData.append("pass", password);
+        }
         formData.append('video', video as File);
-
+        formData.append('allowedSites', JSON.stringify(allowedSites));
+        console.log(formData);
         try {
             const response = await axios.post('http://localhost:8000/api/v1/video/upload', formData, {
                 headers: {
@@ -34,17 +43,17 @@ function VideoUploadForm() {
 
             console.log(response.data.fileId);
             setVideoId(response.data.fileId);
-            const interval = setInterval(async ()=>{
+            const interval = setInterval(async () => {
                 const proResponse = await axios.get(`http://localhost:8000/api/v1/video/trStatus/${response.data.fileId}`);
                 const progress = proResponse.data;
-                if(progress.status === "FINISHED"){
+                if (progress.status === "FINISHED") {
                     clearInterval(interval);
-                    setTimeout(()=>{setUploadProgress(-1)},2000);
-                }else if(progress.status === "QUEUED"){
+                    setTimeout(() => { setUploadProgress(-1) }, 2000);
+                } else if (progress.status === "QUEUED") {
                     setTranscodeText("Queued")
-                }else if(progress.status === "TRANSCODING"){
+                } else if (progress.status === "TRANSCODING") {
                     setTranscodeText(`${progress.progress.quality} |${progress.progress.progress}% `)
-                }else{
+                } else {
                     setTranscodeText("Undefined Behaviour");
                 }
             }, 1000)
@@ -55,8 +64,8 @@ function VideoUploadForm() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-            {uploadProgress===100 && (
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white opacity-80 filter backdrop-blur-lg rounded-lg shadow-lg">
+            {uploadProgress === 100 && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-5 rounded shadow-lg">
                         <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -89,11 +98,47 @@ function VideoUploadForm() {
                         className="w-full px-3 py-2 border bg-gray-100 border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        rows={5}
+                        rows={3}
+                        required
+                    ></textarea>
+                </div>
+                {/* Allowed Sites Textarea */}
+                <div className="mb-4">
+                    <label htmlFor="allowedSites" className="block text-gray-700 font-medium mb-2">Allowed Sites</label>
+                    <textarea
+                        id="allowedSites"
+                        className="w-full px-3 py-2 border bg-gray-100 border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        onChange={(e) => {
+                            const val = e.target.value.trim()
+                            if (val.length > 0) {
+                                setAllowedSites(val.split(","))
+                            }
+                        }}
+                        rows={2}
                         required
                     ></textarea>
                 </div>
 
+                {/* Use Protection Checkbox */}
+                <div className="mb-4 gap-x-2">
+                    <Checkbox id='protectVideo' className='mr-1' onCheckedChange={e => setUseProtection(e as boolean)} />
+                    <label htmlFor="protectVideo" className="text-gray-700 font-medium">Protect Video</label>
+                </div>
+                {/* Password Input */}
+                {
+                    useProtection && (
+                        <div className="mb-4">
+                            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                className="w-full bg-gray-100 px-3 py-2 border border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                    )
+                }
                 {/* Video File Input */}
                 <div className="mb-4">
                     <label htmlFor="video" className="block text-gray-700 font-medium mb-2">Select Video</label>

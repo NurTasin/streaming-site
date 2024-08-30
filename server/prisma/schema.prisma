@@ -16,9 +16,10 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  username  String  @unique
+  id        String @id @default(uuid())
+  username  String @unique
   pass_hash String
+
   @@index([username])
 }
 
@@ -27,10 +28,27 @@ model Video {
   title                String
   description          String   @db.LongText
   views                BigInt   @default(0)
+  referer              Json?
+  protected            Boolean  @default(false)
+  pass_hash            String?
   org_file_dest        String?
   processed            Boolean  @default(false)
   transcoded_file_dest String?
   transcode_state      String   @default("QUEUED")
   org_file_size        BigInt
   uploaded_at          DateTime @default(now())
+}
+
+enum TokenType {
+  ONE_TIME
+  TIME_BOUND
+}
+
+model AccessToken {
+  id         String    @id @default(uuid())
+  videoId    String
+  type       TokenType @default(ONE_TIME)
+  expires_on DateTime?
+  used       Boolean?
+  created_at DateTime  @default(now())
 }

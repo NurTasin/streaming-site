@@ -23,6 +23,28 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  * 
  */
 export type Video = $Result.DefaultSelection<Prisma.$VideoPayload>
+/**
+ * Model AccessToken
+ * 
+ */
+export type AccessToken = $Result.DefaultSelection<Prisma.$AccessTokenPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const TokenType: {
+  ONE_TIME: 'ONE_TIME',
+  TIME_BOUND: 'TIME_BOUND'
+};
+
+export type TokenType = (typeof TokenType)[keyof typeof TokenType]
+
+}
+
+export type TokenType = $Enums.TokenType
+
+export const TokenType: typeof $Enums.TokenType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -165,6 +187,16 @@ export class PrismaClient<
     * ```
     */
   get video(): Prisma.VideoDelegate<ExtArgs>;
+
+  /**
+   * `prisma.accessToken`: Exposes CRUD operations for the **AccessToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AccessTokens
+    * const accessTokens = await prisma.accessToken.findMany()
+    * ```
+    */
+  get accessToken(): Prisma.AccessTokenDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -643,7 +675,8 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Video: 'Video'
+    Video: 'Video',
+    AccessToken: 'AccessToken'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -659,7 +692,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "video"
+      modelProps: "user" | "video" | "accessToken"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -792,6 +825,72 @@ export namespace Prisma {
           count: {
             args: Prisma.VideoCountArgs<ExtArgs>
             result: $Utils.Optional<VideoCountAggregateOutputType> | number
+          }
+        }
+      }
+      AccessToken: {
+        payload: Prisma.$AccessTokenPayload<ExtArgs>
+        fields: Prisma.AccessTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AccessTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccessTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AccessTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccessTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.AccessTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccessTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AccessTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccessTokenPayload>
+          }
+          findMany: {
+            args: Prisma.AccessTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccessTokenPayload>[]
+          }
+          create: {
+            args: Prisma.AccessTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccessTokenPayload>
+          }
+          createMany: {
+            args: Prisma.AccessTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.AccessTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccessTokenPayload>
+          }
+          update: {
+            args: Prisma.AccessTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccessTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.AccessTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AccessTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AccessTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccessTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.AccessTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAccessToken>
+          }
+          groupBy: {
+            args: Prisma.AccessTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AccessTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AccessTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<AccessTokenCountAggregateOutputType> | number
           }
         }
       }
@@ -1793,6 +1892,8 @@ export namespace Prisma {
     title: string | null
     description: string | null
     views: bigint | null
+    protected: boolean | null
+    pass_hash: string | null
     org_file_dest: string | null
     processed: boolean | null
     transcoded_file_dest: string | null
@@ -1806,6 +1907,8 @@ export namespace Prisma {
     title: string | null
     description: string | null
     views: bigint | null
+    protected: boolean | null
+    pass_hash: string | null
     org_file_dest: string | null
     processed: boolean | null
     transcoded_file_dest: string | null
@@ -1819,6 +1922,9 @@ export namespace Prisma {
     title: number
     description: number
     views: number
+    referer: number
+    protected: number
+    pass_hash: number
     org_file_dest: number
     processed: number
     transcoded_file_dest: number
@@ -1844,6 +1950,8 @@ export namespace Prisma {
     title?: true
     description?: true
     views?: true
+    protected?: true
+    pass_hash?: true
     org_file_dest?: true
     processed?: true
     transcoded_file_dest?: true
@@ -1857,6 +1965,8 @@ export namespace Prisma {
     title?: true
     description?: true
     views?: true
+    protected?: true
+    pass_hash?: true
     org_file_dest?: true
     processed?: true
     transcoded_file_dest?: true
@@ -1870,6 +1980,9 @@ export namespace Prisma {
     title?: true
     description?: true
     views?: true
+    referer?: true
+    protected?: true
+    pass_hash?: true
     org_file_dest?: true
     processed?: true
     transcoded_file_dest?: true
@@ -1970,6 +2083,9 @@ export namespace Prisma {
     title: string
     description: string
     views: bigint
+    referer: JsonValue | null
+    protected: boolean
+    pass_hash: string | null
     org_file_dest: string | null
     processed: boolean
     transcoded_file_dest: string | null
@@ -2002,6 +2118,9 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     views?: boolean
+    referer?: boolean
+    protected?: boolean
+    pass_hash?: boolean
     org_file_dest?: boolean
     processed?: boolean
     transcoded_file_dest?: boolean
@@ -2016,6 +2135,9 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     views?: boolean
+    referer?: boolean
+    protected?: boolean
+    pass_hash?: boolean
     org_file_dest?: boolean
     processed?: boolean
     transcoded_file_dest?: boolean
@@ -2033,6 +2155,9 @@ export namespace Prisma {
       title: string
       description: string
       views: bigint
+      referer: Prisma.JsonValue | null
+      protected: boolean
+      pass_hash: string | null
       org_file_dest: string | null
       processed: boolean
       transcoded_file_dest: string | null
@@ -2412,6 +2537,9 @@ export namespace Prisma {
     readonly title: FieldRef<"Video", 'String'>
     readonly description: FieldRef<"Video", 'String'>
     readonly views: FieldRef<"Video", 'BigInt'>
+    readonly referer: FieldRef<"Video", 'Json'>
+    readonly protected: FieldRef<"Video", 'Boolean'>
+    readonly pass_hash: FieldRef<"Video", 'String'>
     readonly org_file_dest: FieldRef<"Video", 'String'>
     readonly processed: FieldRef<"Video", 'Boolean'>
     readonly transcoded_file_dest: FieldRef<"Video", 'String'>
@@ -2692,6 +2820,849 @@ export namespace Prisma {
 
 
   /**
+   * Model AccessToken
+   */
+
+  export type AggregateAccessToken = {
+    _count: AccessTokenCountAggregateOutputType | null
+    _min: AccessTokenMinAggregateOutputType | null
+    _max: AccessTokenMaxAggregateOutputType | null
+  }
+
+  export type AccessTokenMinAggregateOutputType = {
+    id: string | null
+    videoId: string | null
+    type: $Enums.TokenType | null
+    expires_on: Date | null
+    used: boolean | null
+    created_at: Date | null
+  }
+
+  export type AccessTokenMaxAggregateOutputType = {
+    id: string | null
+    videoId: string | null
+    type: $Enums.TokenType | null
+    expires_on: Date | null
+    used: boolean | null
+    created_at: Date | null
+  }
+
+  export type AccessTokenCountAggregateOutputType = {
+    id: number
+    videoId: number
+    type: number
+    expires_on: number
+    used: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type AccessTokenMinAggregateInputType = {
+    id?: true
+    videoId?: true
+    type?: true
+    expires_on?: true
+    used?: true
+    created_at?: true
+  }
+
+  export type AccessTokenMaxAggregateInputType = {
+    id?: true
+    videoId?: true
+    type?: true
+    expires_on?: true
+    used?: true
+    created_at?: true
+  }
+
+  export type AccessTokenCountAggregateInputType = {
+    id?: true
+    videoId?: true
+    type?: true
+    expires_on?: true
+    used?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type AccessTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AccessToken to aggregate.
+     */
+    where?: AccessTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AccessTokens to fetch.
+     */
+    orderBy?: AccessTokenOrderByWithRelationInput | AccessTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AccessTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AccessTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AccessTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AccessTokens
+    **/
+    _count?: true | AccessTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AccessTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AccessTokenMaxAggregateInputType
+  }
+
+  export type GetAccessTokenAggregateType<T extends AccessTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregateAccessToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAccessToken[P]>
+      : GetScalarType<T[P], AggregateAccessToken[P]>
+  }
+
+
+
+
+  export type AccessTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccessTokenWhereInput
+    orderBy?: AccessTokenOrderByWithAggregationInput | AccessTokenOrderByWithAggregationInput[]
+    by: AccessTokenScalarFieldEnum[] | AccessTokenScalarFieldEnum
+    having?: AccessTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AccessTokenCountAggregateInputType | true
+    _min?: AccessTokenMinAggregateInputType
+    _max?: AccessTokenMaxAggregateInputType
+  }
+
+  export type AccessTokenGroupByOutputType = {
+    id: string
+    videoId: string
+    type: $Enums.TokenType
+    expires_on: Date | null
+    used: boolean | null
+    created_at: Date
+    _count: AccessTokenCountAggregateOutputType | null
+    _min: AccessTokenMinAggregateOutputType | null
+    _max: AccessTokenMaxAggregateOutputType | null
+  }
+
+  type GetAccessTokenGroupByPayload<T extends AccessTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AccessTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AccessTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AccessTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], AccessTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AccessTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    videoId?: boolean
+    type?: boolean
+    expires_on?: boolean
+    used?: boolean
+    created_at?: boolean
+  }, ExtArgs["result"]["accessToken"]>
+
+
+  export type AccessTokenSelectScalar = {
+    id?: boolean
+    videoId?: boolean
+    type?: boolean
+    expires_on?: boolean
+    used?: boolean
+    created_at?: boolean
+  }
+
+
+  export type $AccessTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AccessToken"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      videoId: string
+      type: $Enums.TokenType
+      expires_on: Date | null
+      used: boolean | null
+      created_at: Date
+    }, ExtArgs["result"]["accessToken"]>
+    composites: {}
+  }
+
+  type AccessTokenGetPayload<S extends boolean | null | undefined | AccessTokenDefaultArgs> = $Result.GetResult<Prisma.$AccessTokenPayload, S>
+
+  type AccessTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<AccessTokenFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: AccessTokenCountAggregateInputType | true
+    }
+
+  export interface AccessTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AccessToken'], meta: { name: 'AccessToken' } }
+    /**
+     * Find zero or one AccessToken that matches the filter.
+     * @param {AccessTokenFindUniqueArgs} args - Arguments to find a AccessToken
+     * @example
+     * // Get one AccessToken
+     * const accessToken = await prisma.accessToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AccessTokenFindUniqueArgs>(args: SelectSubset<T, AccessTokenFindUniqueArgs<ExtArgs>>): Prisma__AccessTokenClient<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one AccessToken that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {AccessTokenFindUniqueOrThrowArgs} args - Arguments to find a AccessToken
+     * @example
+     * // Get one AccessToken
+     * const accessToken = await prisma.accessToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AccessTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, AccessTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AccessTokenClient<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first AccessToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccessTokenFindFirstArgs} args - Arguments to find a AccessToken
+     * @example
+     * // Get one AccessToken
+     * const accessToken = await prisma.accessToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AccessTokenFindFirstArgs>(args?: SelectSubset<T, AccessTokenFindFirstArgs<ExtArgs>>): Prisma__AccessTokenClient<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first AccessToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccessTokenFindFirstOrThrowArgs} args - Arguments to find a AccessToken
+     * @example
+     * // Get one AccessToken
+     * const accessToken = await prisma.accessToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AccessTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, AccessTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__AccessTokenClient<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more AccessTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccessTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AccessTokens
+     * const accessTokens = await prisma.accessToken.findMany()
+     * 
+     * // Get first 10 AccessTokens
+     * const accessTokens = await prisma.accessToken.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const accessTokenWithIdOnly = await prisma.accessToken.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AccessTokenFindManyArgs>(args?: SelectSubset<T, AccessTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a AccessToken.
+     * @param {AccessTokenCreateArgs} args - Arguments to create a AccessToken.
+     * @example
+     * // Create one AccessToken
+     * const AccessToken = await prisma.accessToken.create({
+     *   data: {
+     *     // ... data to create a AccessToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends AccessTokenCreateArgs>(args: SelectSubset<T, AccessTokenCreateArgs<ExtArgs>>): Prisma__AccessTokenClient<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many AccessTokens.
+     * @param {AccessTokenCreateManyArgs} args - Arguments to create many AccessTokens.
+     * @example
+     * // Create many AccessTokens
+     * const accessToken = await prisma.accessToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AccessTokenCreateManyArgs>(args?: SelectSubset<T, AccessTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a AccessToken.
+     * @param {AccessTokenDeleteArgs} args - Arguments to delete one AccessToken.
+     * @example
+     * // Delete one AccessToken
+     * const AccessToken = await prisma.accessToken.delete({
+     *   where: {
+     *     // ... filter to delete one AccessToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AccessTokenDeleteArgs>(args: SelectSubset<T, AccessTokenDeleteArgs<ExtArgs>>): Prisma__AccessTokenClient<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one AccessToken.
+     * @param {AccessTokenUpdateArgs} args - Arguments to update one AccessToken.
+     * @example
+     * // Update one AccessToken
+     * const accessToken = await prisma.accessToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AccessTokenUpdateArgs>(args: SelectSubset<T, AccessTokenUpdateArgs<ExtArgs>>): Prisma__AccessTokenClient<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more AccessTokens.
+     * @param {AccessTokenDeleteManyArgs} args - Arguments to filter AccessTokens to delete.
+     * @example
+     * // Delete a few AccessTokens
+     * const { count } = await prisma.accessToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AccessTokenDeleteManyArgs>(args?: SelectSubset<T, AccessTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AccessTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccessTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AccessTokens
+     * const accessToken = await prisma.accessToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AccessTokenUpdateManyArgs>(args: SelectSubset<T, AccessTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one AccessToken.
+     * @param {AccessTokenUpsertArgs} args - Arguments to update or create a AccessToken.
+     * @example
+     * // Update or create a AccessToken
+     * const accessToken = await prisma.accessToken.upsert({
+     *   create: {
+     *     // ... data to create a AccessToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AccessToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AccessTokenUpsertArgs>(args: SelectSubset<T, AccessTokenUpsertArgs<ExtArgs>>): Prisma__AccessTokenClient<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of AccessTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccessTokenCountArgs} args - Arguments to filter AccessTokens to count.
+     * @example
+     * // Count the number of AccessTokens
+     * const count = await prisma.accessToken.count({
+     *   where: {
+     *     // ... the filter for the AccessTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends AccessTokenCountArgs>(
+      args?: Subset<T, AccessTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AccessTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AccessToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccessTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AccessTokenAggregateArgs>(args: Subset<T, AccessTokenAggregateArgs>): Prisma.PrismaPromise<GetAccessTokenAggregateType<T>>
+
+    /**
+     * Group by AccessToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccessTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AccessTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AccessTokenGroupByArgs['orderBy'] }
+        : { orderBy?: AccessTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AccessTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccessTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AccessToken model
+   */
+  readonly fields: AccessTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AccessToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AccessTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AccessToken model
+   */ 
+  interface AccessTokenFieldRefs {
+    readonly id: FieldRef<"AccessToken", 'String'>
+    readonly videoId: FieldRef<"AccessToken", 'String'>
+    readonly type: FieldRef<"AccessToken", 'TokenType'>
+    readonly expires_on: FieldRef<"AccessToken", 'DateTime'>
+    readonly used: FieldRef<"AccessToken", 'Boolean'>
+    readonly created_at: FieldRef<"AccessToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AccessToken findUnique
+   */
+  export type AccessTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which AccessToken to fetch.
+     */
+    where: AccessTokenWhereUniqueInput
+  }
+
+  /**
+   * AccessToken findUniqueOrThrow
+   */
+  export type AccessTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which AccessToken to fetch.
+     */
+    where: AccessTokenWhereUniqueInput
+  }
+
+  /**
+   * AccessToken findFirst
+   */
+  export type AccessTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which AccessToken to fetch.
+     */
+    where?: AccessTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AccessTokens to fetch.
+     */
+    orderBy?: AccessTokenOrderByWithRelationInput | AccessTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AccessTokens.
+     */
+    cursor?: AccessTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AccessTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AccessTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AccessTokens.
+     */
+    distinct?: AccessTokenScalarFieldEnum | AccessTokenScalarFieldEnum[]
+  }
+
+  /**
+   * AccessToken findFirstOrThrow
+   */
+  export type AccessTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which AccessToken to fetch.
+     */
+    where?: AccessTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AccessTokens to fetch.
+     */
+    orderBy?: AccessTokenOrderByWithRelationInput | AccessTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AccessTokens.
+     */
+    cursor?: AccessTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AccessTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AccessTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AccessTokens.
+     */
+    distinct?: AccessTokenScalarFieldEnum | AccessTokenScalarFieldEnum[]
+  }
+
+  /**
+   * AccessToken findMany
+   */
+  export type AccessTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which AccessTokens to fetch.
+     */
+    where?: AccessTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AccessTokens to fetch.
+     */
+    orderBy?: AccessTokenOrderByWithRelationInput | AccessTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AccessTokens.
+     */
+    cursor?: AccessTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AccessTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AccessTokens.
+     */
+    skip?: number
+    distinct?: AccessTokenScalarFieldEnum | AccessTokenScalarFieldEnum[]
+  }
+
+  /**
+   * AccessToken create
+   */
+  export type AccessTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+    /**
+     * The data needed to create a AccessToken.
+     */
+    data: XOR<AccessTokenCreateInput, AccessTokenUncheckedCreateInput>
+  }
+
+  /**
+   * AccessToken createMany
+   */
+  export type AccessTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AccessTokens.
+     */
+    data: AccessTokenCreateManyInput | AccessTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AccessToken update
+   */
+  export type AccessTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+    /**
+     * The data needed to update a AccessToken.
+     */
+    data: XOR<AccessTokenUpdateInput, AccessTokenUncheckedUpdateInput>
+    /**
+     * Choose, which AccessToken to update.
+     */
+    where: AccessTokenWhereUniqueInput
+  }
+
+  /**
+   * AccessToken updateMany
+   */
+  export type AccessTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AccessTokens.
+     */
+    data: XOR<AccessTokenUpdateManyMutationInput, AccessTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which AccessTokens to update
+     */
+    where?: AccessTokenWhereInput
+  }
+
+  /**
+   * AccessToken upsert
+   */
+  export type AccessTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+    /**
+     * The filter to search for the AccessToken to update in case it exists.
+     */
+    where: AccessTokenWhereUniqueInput
+    /**
+     * In case the AccessToken found by the `where` argument doesn't exist, create a new AccessToken with this data.
+     */
+    create: XOR<AccessTokenCreateInput, AccessTokenUncheckedCreateInput>
+    /**
+     * In case the AccessToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AccessTokenUpdateInput, AccessTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * AccessToken delete
+   */
+  export type AccessTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+    /**
+     * Filter which AccessToken to delete.
+     */
+    where: AccessTokenWhereUniqueInput
+  }
+
+  /**
+   * AccessToken deleteMany
+   */
+  export type AccessTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AccessTokens to delete
+     */
+    where?: AccessTokenWhereInput
+  }
+
+  /**
+   * AccessToken without action
+   */
+  export type AccessTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccessToken
+     */
+    select?: AccessTokenSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -2719,6 +3690,9 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     views: 'views',
+    referer: 'referer',
+    protected: 'protected',
+    pass_hash: 'pass_hash',
     org_file_dest: 'org_file_dest',
     processed: 'processed',
     transcoded_file_dest: 'transcoded_file_dest',
@@ -2730,12 +3704,41 @@ export namespace Prisma {
   export type VideoScalarFieldEnum = (typeof VideoScalarFieldEnum)[keyof typeof VideoScalarFieldEnum]
 
 
+  export const AccessTokenScalarFieldEnum: {
+    id: 'id',
+    videoId: 'videoId',
+    type: 'type',
+    expires_on: 'expires_on',
+    used: 'used',
+    created_at: 'created_at'
+  };
+
+  export type AccessTokenScalarFieldEnum = (typeof AccessTokenScalarFieldEnum)[keyof typeof AccessTokenScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   export const NullsOrder: {
@@ -2766,6 +3769,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -2776,6 +3786,13 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'TokenType'
+   */
+  export type EnumTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TokenType'>
     
 
 
@@ -2846,6 +3863,9 @@ export namespace Prisma {
     title?: StringFilter<"Video"> | string
     description?: StringFilter<"Video"> | string
     views?: BigIntFilter<"Video"> | bigint | number
+    referer?: JsonNullableFilter<"Video">
+    protected?: BoolFilter<"Video"> | boolean
+    pass_hash?: StringNullableFilter<"Video"> | string | null
     org_file_dest?: StringNullableFilter<"Video"> | string | null
     processed?: BoolFilter<"Video"> | boolean
     transcoded_file_dest?: StringNullableFilter<"Video"> | string | null
@@ -2859,6 +3879,9 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     views?: SortOrder
+    referer?: SortOrderInput | SortOrder
+    protected?: SortOrder
+    pass_hash?: SortOrderInput | SortOrder
     org_file_dest?: SortOrderInput | SortOrder
     processed?: SortOrder
     transcoded_file_dest?: SortOrderInput | SortOrder
@@ -2875,6 +3898,9 @@ export namespace Prisma {
     title?: StringFilter<"Video"> | string
     description?: StringFilter<"Video"> | string
     views?: BigIntFilter<"Video"> | bigint | number
+    referer?: JsonNullableFilter<"Video">
+    protected?: BoolFilter<"Video"> | boolean
+    pass_hash?: StringNullableFilter<"Video"> | string | null
     org_file_dest?: StringNullableFilter<"Video"> | string | null
     processed?: BoolFilter<"Video"> | boolean
     transcoded_file_dest?: StringNullableFilter<"Video"> | string | null
@@ -2888,6 +3914,9 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     views?: SortOrder
+    referer?: SortOrderInput | SortOrder
+    protected?: SortOrder
+    pass_hash?: SortOrderInput | SortOrder
     org_file_dest?: SortOrderInput | SortOrder
     processed?: SortOrder
     transcoded_file_dest?: SortOrderInput | SortOrder
@@ -2909,12 +3938,72 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Video"> | string
     description?: StringWithAggregatesFilter<"Video"> | string
     views?: BigIntWithAggregatesFilter<"Video"> | bigint | number
+    referer?: JsonNullableWithAggregatesFilter<"Video">
+    protected?: BoolWithAggregatesFilter<"Video"> | boolean
+    pass_hash?: StringNullableWithAggregatesFilter<"Video"> | string | null
     org_file_dest?: StringNullableWithAggregatesFilter<"Video"> | string | null
     processed?: BoolWithAggregatesFilter<"Video"> | boolean
     transcoded_file_dest?: StringNullableWithAggregatesFilter<"Video"> | string | null
     transcode_state?: StringWithAggregatesFilter<"Video"> | string
     org_file_size?: BigIntWithAggregatesFilter<"Video"> | bigint | number
     uploaded_at?: DateTimeWithAggregatesFilter<"Video"> | Date | string
+  }
+
+  export type AccessTokenWhereInput = {
+    AND?: AccessTokenWhereInput | AccessTokenWhereInput[]
+    OR?: AccessTokenWhereInput[]
+    NOT?: AccessTokenWhereInput | AccessTokenWhereInput[]
+    id?: StringFilter<"AccessToken"> | string
+    videoId?: StringFilter<"AccessToken"> | string
+    type?: EnumTokenTypeFilter<"AccessToken"> | $Enums.TokenType
+    expires_on?: DateTimeNullableFilter<"AccessToken"> | Date | string | null
+    used?: BoolNullableFilter<"AccessToken"> | boolean | null
+    created_at?: DateTimeFilter<"AccessToken"> | Date | string
+  }
+
+  export type AccessTokenOrderByWithRelationInput = {
+    id?: SortOrder
+    videoId?: SortOrder
+    type?: SortOrder
+    expires_on?: SortOrderInput | SortOrder
+    used?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+  }
+
+  export type AccessTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AccessTokenWhereInput | AccessTokenWhereInput[]
+    OR?: AccessTokenWhereInput[]
+    NOT?: AccessTokenWhereInput | AccessTokenWhereInput[]
+    videoId?: StringFilter<"AccessToken"> | string
+    type?: EnumTokenTypeFilter<"AccessToken"> | $Enums.TokenType
+    expires_on?: DateTimeNullableFilter<"AccessToken"> | Date | string | null
+    used?: BoolNullableFilter<"AccessToken"> | boolean | null
+    created_at?: DateTimeFilter<"AccessToken"> | Date | string
+  }, "id">
+
+  export type AccessTokenOrderByWithAggregationInput = {
+    id?: SortOrder
+    videoId?: SortOrder
+    type?: SortOrder
+    expires_on?: SortOrderInput | SortOrder
+    used?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    _count?: AccessTokenCountOrderByAggregateInput
+    _max?: AccessTokenMaxOrderByAggregateInput
+    _min?: AccessTokenMinOrderByAggregateInput
+  }
+
+  export type AccessTokenScalarWhereWithAggregatesInput = {
+    AND?: AccessTokenScalarWhereWithAggregatesInput | AccessTokenScalarWhereWithAggregatesInput[]
+    OR?: AccessTokenScalarWhereWithAggregatesInput[]
+    NOT?: AccessTokenScalarWhereWithAggregatesInput | AccessTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AccessToken"> | string
+    videoId?: StringWithAggregatesFilter<"AccessToken"> | string
+    type?: EnumTokenTypeWithAggregatesFilter<"AccessToken"> | $Enums.TokenType
+    expires_on?: DateTimeNullableWithAggregatesFilter<"AccessToken"> | Date | string | null
+    used?: BoolNullableWithAggregatesFilter<"AccessToken"> | boolean | null
+    created_at?: DateTimeWithAggregatesFilter<"AccessToken"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -2964,6 +4053,9 @@ export namespace Prisma {
     title: string
     description: string
     views?: bigint | number
+    referer?: NullableJsonNullValueInput | InputJsonValue
+    protected?: boolean
+    pass_hash?: string | null
     org_file_dest?: string | null
     processed?: boolean
     transcoded_file_dest?: string | null
@@ -2977,6 +4069,9 @@ export namespace Prisma {
     title: string
     description: string
     views?: bigint | number
+    referer?: NullableJsonNullValueInput | InputJsonValue
+    protected?: boolean
+    pass_hash?: string | null
     org_file_dest?: string | null
     processed?: boolean
     transcoded_file_dest?: string | null
@@ -2990,6 +4085,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     views?: BigIntFieldUpdateOperationsInput | bigint | number
+    referer?: NullableJsonNullValueInput | InputJsonValue
+    protected?: BoolFieldUpdateOperationsInput | boolean
+    pass_hash?: NullableStringFieldUpdateOperationsInput | string | null
     org_file_dest?: NullableStringFieldUpdateOperationsInput | string | null
     processed?: BoolFieldUpdateOperationsInput | boolean
     transcoded_file_dest?: NullableStringFieldUpdateOperationsInput | string | null
@@ -3003,6 +4101,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     views?: BigIntFieldUpdateOperationsInput | bigint | number
+    referer?: NullableJsonNullValueInput | InputJsonValue
+    protected?: BoolFieldUpdateOperationsInput | boolean
+    pass_hash?: NullableStringFieldUpdateOperationsInput | string | null
     org_file_dest?: NullableStringFieldUpdateOperationsInput | string | null
     processed?: BoolFieldUpdateOperationsInput | boolean
     transcoded_file_dest?: NullableStringFieldUpdateOperationsInput | string | null
@@ -3016,6 +4117,9 @@ export namespace Prisma {
     title: string
     description: string
     views?: bigint | number
+    referer?: NullableJsonNullValueInput | InputJsonValue
+    protected?: boolean
+    pass_hash?: string | null
     org_file_dest?: string | null
     processed?: boolean
     transcoded_file_dest?: string | null
@@ -3029,6 +4133,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     views?: BigIntFieldUpdateOperationsInput | bigint | number
+    referer?: NullableJsonNullValueInput | InputJsonValue
+    protected?: BoolFieldUpdateOperationsInput | boolean
+    pass_hash?: NullableStringFieldUpdateOperationsInput | string | null
     org_file_dest?: NullableStringFieldUpdateOperationsInput | string | null
     processed?: BoolFieldUpdateOperationsInput | boolean
     transcoded_file_dest?: NullableStringFieldUpdateOperationsInput | string | null
@@ -3042,12 +4149,78 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     views?: BigIntFieldUpdateOperationsInput | bigint | number
+    referer?: NullableJsonNullValueInput | InputJsonValue
+    protected?: BoolFieldUpdateOperationsInput | boolean
+    pass_hash?: NullableStringFieldUpdateOperationsInput | string | null
     org_file_dest?: NullableStringFieldUpdateOperationsInput | string | null
     processed?: BoolFieldUpdateOperationsInput | boolean
     transcoded_file_dest?: NullableStringFieldUpdateOperationsInput | string | null
     transcode_state?: StringFieldUpdateOperationsInput | string
     org_file_size?: BigIntFieldUpdateOperationsInput | bigint | number
     uploaded_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccessTokenCreateInput = {
+    id?: string
+    videoId: string
+    type?: $Enums.TokenType
+    expires_on?: Date | string | null
+    used?: boolean | null
+    created_at?: Date | string
+  }
+
+  export type AccessTokenUncheckedCreateInput = {
+    id?: string
+    videoId: string
+    type?: $Enums.TokenType
+    expires_on?: Date | string | null
+    used?: boolean | null
+    created_at?: Date | string
+  }
+
+  export type AccessTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    videoId?: StringFieldUpdateOperationsInput | string
+    type?: EnumTokenTypeFieldUpdateOperationsInput | $Enums.TokenType
+    expires_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    used?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccessTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    videoId?: StringFieldUpdateOperationsInput | string
+    type?: EnumTokenTypeFieldUpdateOperationsInput | $Enums.TokenType
+    expires_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    used?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccessTokenCreateManyInput = {
+    id?: string
+    videoId: string
+    type?: $Enums.TokenType
+    expires_on?: Date | string | null
+    used?: boolean | null
+    created_at?: Date | string
+  }
+
+  export type AccessTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    videoId?: StringFieldUpdateOperationsInput | string
+    type?: EnumTokenTypeFieldUpdateOperationsInput | $Enums.TokenType
+    expires_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    used?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccessTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    videoId?: StringFieldUpdateOperationsInput | string
+    type?: EnumTokenTypeFieldUpdateOperationsInput | $Enums.TokenType
+    expires_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    used?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -3109,6 +4282,33 @@ export namespace Prisma {
     gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
+  export type JsonNullableFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
 
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
@@ -3122,11 +4322,6 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -3150,6 +4345,9 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     views?: SortOrder
+    referer?: SortOrder
+    protected?: SortOrder
+    pass_hash?: SortOrder
     org_file_dest?: SortOrder
     processed?: SortOrder
     transcoded_file_dest?: SortOrder
@@ -3168,6 +4366,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     views?: SortOrder
+    protected?: SortOrder
+    pass_hash?: SortOrder
     org_file_dest?: SortOrder
     processed?: SortOrder
     transcoded_file_dest?: SortOrder
@@ -3181,6 +4381,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     views?: SortOrder
+    protected?: SortOrder
+    pass_hash?: SortOrder
     org_file_dest?: SortOrder
     processed?: SortOrder
     transcoded_file_dest?: SortOrder
@@ -3209,6 +4411,39 @@ export namespace Prisma {
     _min?: NestedBigIntFilter<$PrismaModel>
     _max?: NestedBigIntFilter<$PrismaModel>
   }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
@@ -3227,14 +4462,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -3249,6 +4476,88 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type EnumTokenTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TokenType | EnumTokenTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TokenType[]
+    notIn?: $Enums.TokenType[]
+    not?: NestedEnumTokenTypeFilter<$PrismaModel> | $Enums.TokenType
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type AccessTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    videoId?: SortOrder
+    type?: SortOrder
+    expires_on?: SortOrder
+    used?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type AccessTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    videoId?: SortOrder
+    type?: SortOrder
+    expires_on?: SortOrder
+    used?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type AccessTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    videoId?: SortOrder
+    type?: SortOrder
+    expires_on?: SortOrder
+    used?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type EnumTokenTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TokenType | EnumTokenTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TokenType[]
+    notIn?: $Enums.TokenType[]
+    not?: NestedEnumTokenTypeWithAggregatesFilter<$PrismaModel> | $Enums.TokenType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTokenTypeFilter<$PrismaModel>
+    _max?: NestedEnumTokenTypeFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -3261,16 +4570,28 @@ export namespace Prisma {
     divide?: bigint | number
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type EnumTokenTypeFieldUpdateOperationsInput = {
+    set?: $Enums.TokenType
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -3326,6 +4647,11 @@ export namespace Prisma {
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -3338,11 +4664,6 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -3383,6 +4704,47 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -3400,25 +4762,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -3431,6 +4774,61 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTokenTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TokenType | EnumTokenTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TokenType[]
+    notIn?: $Enums.TokenType[]
+    not?: NestedEnumTokenTypeFilter<$PrismaModel> | $Enums.TokenType
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type NestedEnumTokenTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TokenType | EnumTokenTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TokenType[]
+    notIn?: $Enums.TokenType[]
+    not?: NestedEnumTokenTypeWithAggregatesFilter<$PrismaModel> | $Enums.TokenType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTokenTypeFilter<$PrismaModel>
+    _max?: NestedEnumTokenTypeFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
 
@@ -3446,6 +4844,10 @@ export namespace Prisma {
      * @deprecated Use VideoDefaultArgs instead
      */
     export type VideoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VideoDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AccessTokenDefaultArgs instead
+     */
+    export type AccessTokenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AccessTokenDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
